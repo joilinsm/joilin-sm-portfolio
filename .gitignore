@@ -19,12 +19,24 @@
 
 # production
 /build
+/dist
+
+# caches
+.turbo/
+.cache/
 
 # misc
 .DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*.swp
+*.swo
+*~
 *.pem
 
 # debug
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
