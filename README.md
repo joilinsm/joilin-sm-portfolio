@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JOILIN S M — Portfolio
 
-## Getting Started
+A Germany-focused academic and professional portfolio built with Next.js,
+TypeScript, Tailwind CSS, Framer Motion, and Lucide icons.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Production checks:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-## Learn More
+Document audit:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run validate:documents
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This checks every `/documents/...` URL in `portfolioData` against the physical
+files under `public/documents/` and reports missing or invalid references.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Edit portfolio content
 
-## Deploy on Vercel
+All personal content is stored in:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+src/data/portfolio.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Edit this file to change the name, biography, education, experience, skills,
+projects, credentials, languages, contact details, or social links. UI
+components should not need to be changed.
+
+### CV
+
+1. Place the PDF at `public/documents/joilin-cv.pdf`.
+2. Set `profile.documents.cvAvailable` to `true` in
+   `src/data/portfolio.ts`.
+
+The path can also be changed in that same object.
+
+### Projects, experience, and credentials
+
+- Add projects to `projects`; cards, filters, sitemap entries, and case-study
+  pages are generated automatically.
+- Add internships or employment to `experience`.
+- Add verified entries to `certifications` and `achievements`.
+- Add standalone language documents to `certificateFiles`; reuse an existing
+  certification in a language card through `certificationIds`.
+- Add subjects to `education[0].coursework`.
+- Add transcript rows to `academicRecords`.
+
+Do not remove required object fields. Empty optional strings and arrays are
+handled gracefully by the interface.
+
+### Contact form
+
+The form posts to `POST /api/contact` and is delivered with Resend to
+`joilinsm@gmail.com`. Configure server-side environment variables in
+`.env.local` using the names in `.env.example`. Never put `RESEND_API_KEY` in a
+`NEXT_PUBLIC_` variable.
+
+## Before deployment
+
+Replace every value beginning with `[ADD ...]` in
+`src/data/portfolio.ts`, especially:
+
+- university and locations
+- email, phone, LinkedIn, and GitHub
+- canonical production URL
+- internship companies and verified experience details
+- project dates and evidence
+
+Then run `npm run lint` and `npm run build`.

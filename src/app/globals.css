@@ -1,26 +1,199 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f7f7f4;
+  --paper-strong: #ffffff;
+  --ink: #10243e;
+  --ink-muted: #526274;
+  --line: #d8dde2;
+  --line-strong: #b9c2cb;
+  --accent: #1c5c86;
+  --accent-strong: #174867;
+  --accent-soft: #e8f0f5;
+  --signal: #a67b42;
+  --signal-soft: #f2ece2;
+  --surface-muted: #eff1f1;
+  --shadow-soft: 0 14px 40px -28px rgba(16, 36, 62, 0.32);
+  --shadow-lifted: 0 22px 60px -34px rgba(16, 36, 62, 0.42);
+  --radius-sm: 0.35rem;
+  --radius-md: 0.65rem;
+  --radius-lg: 1rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-paper-strong: var(--paper-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-surface-muted: var(--surface-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root.dark {
+  --paper: #0f1720;
+  --paper-strong: #15202b;
+  --ink: #eef3f7;
+  --ink-muted: #a8b5c1;
+  --line: #2b3946;
+  --line-strong: #425363;
+  --accent: #72add1;
+  --accent-strong: #9dc9e2;
+  --accent-soft: #1a3141;
+  --signal: #d3ad74;
+  --signal-soft: #2d291f;
+  --surface-muted: #18232e;
+  --shadow-soft: 0 14px 40px -28px rgba(0, 0, 0, 0.72);
+  --shadow-lifted: 0 22px 60px -34px rgba(0, 0, 0, 0.82);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-width: 320px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--line) 25%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent 48rem);
+  opacity: 0.35;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper-strong);
+}
+
+a,
+button,
+input,
+textarea,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+button,
+summary {
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.site-container {
+  width: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+}
+
+.section-shell {
+  padding-block: clamp(5rem, 8vw, 8.5rem);
+}
+
+.section-rule {
+  border-top: 1px solid var(--line);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.editorial-shadow {
+  box-shadow: var(--shadow-soft);
+}
+
+.editorial-shadow:hover {
+  box-shadow: var(--shadow-lifted);
+}
+
+.eyebrow {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.metadata {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-180%);
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  padding: 0.7rem 1rem;
+  color: var(--paper);
+  font-weight: 650;
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .site-container {
+    width: min(100% - 1.25rem, 76rem);
+  }
+
+  .section-shell {
+    padding-block: 4.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
